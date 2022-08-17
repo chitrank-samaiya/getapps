@@ -6,15 +6,27 @@ class Import
 
   PARSER_LIST = [CAPTERRA, SOFTWAREADVICE].freeze
 
+  attr_reader :parser, :filepath
+
+  def initialize(parser = nil, filepath = nil)
+    @parser =  parser
+    @filepath = filepath
+  end
+
   def run
-    unless PARSER_LIST.include?(ARGV[0].downcase)
+    unless parser && PARSER_LIST.include?(parser.downcase)
       p "Invalid parser."
       return
     end
 
-    data = Object.const_get("::Parser::#{ARGV[0].capitalize}").parse_and_transform(ARGV[1])
+    if filepath.nil?
+      p "Invalid path of file"
+      return
+    end
 
-    data.each {|row| p row }
+    rows = Object.const_get("::Parser::#{parser.capitalize}").parse_and_transform(filepath)
+
+    rows.each {|row| p row }
   end
 
 end
