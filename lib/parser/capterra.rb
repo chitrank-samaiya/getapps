@@ -8,7 +8,7 @@ module Parser
         {}.tap do |_inner_hash|
           _inner_hash["Name"] = _hash["name"]
           _inner_hash["Categories"] = _hash["tags"]
-          _inner_hash["Twitter"] = _hash["twitter"]
+          _inner_hash["Twitter"] = (_hash["twitter"].split("@")[0] == "") ? _hash["twitter"] : "@#{_hash["twitter"]}" if _hash["twitter"]
         end
       end
     end
