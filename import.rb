@@ -16,6 +16,10 @@ class Import
     @logger = AppLogger::CustomLogger.new(STDOUT)
   end
 
+  def format_log_message(row)
+    row.map {|key, value| "#{key}: #{value}"}.join('; ')
+  end
+
   def run
     unless parser && PARSER_LIST.include?(parser.downcase)
       logger.error "Invalid parser."
@@ -29,7 +33,7 @@ class Import
 
     rows = Object.const_get("::Parser::#{parser.capitalize}").parse_and_transform(filepath)
 
-    rows.each {|row| logger.importing row }
+    rows.each {|row| logger.importing format_log_message(row) }
   end
 
 end
