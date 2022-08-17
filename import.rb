@@ -1,3 +1,4 @@
+require_relative 'lib/app_logger'
 require_relative 'lib/parser'
 
 class Import
@@ -7,26 +8,28 @@ class Import
   PARSER_LIST = [CAPTERRA, SOFTWAREADVICE].freeze
 
   attr_reader :parser, :filepath
+  attr_reader :logger
 
   def initialize(parser = nil, filepath = nil)
     @parser =  parser
     @filepath = filepath
+    @logger = AppLogger::CustomLogger.new(STDOUT)
   end
 
   def run
     unless parser && PARSER_LIST.include?(parser.downcase)
-      p "Invalid parser."
+      logger.error "Invalid parser."
       return
     end
 
     if filepath.nil?
-      p "Invalid path of file"
+      logger.error "Invalid path of file"
       return
     end
 
     rows = Object.const_get("::Parser::#{parser.capitalize}").parse_and_transform(filepath)
 
-    rows.each {|row| p row }
+    rows.each {|row| logger.importing row }
   end
 
 end
