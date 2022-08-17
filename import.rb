@@ -27,7 +27,7 @@ class Import
     end
 
     if filepath.nil?
-      logger.error "Invalid path of file"
+      logger.error "Invalid path of file."
       return
     end
 
