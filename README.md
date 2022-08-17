@@ -1,5 +1,5 @@
 ### Getapps
-Ruby version: 3.0.1
+      Ruby version: 3.0.1
 
 ### Steps to run the application
 
@@ -21,7 +21,7 @@ Ruby version: 3.0.1
         getapp_import softwareadvice feed-products/softwareadvice.json
     ```
 
-3. To run an application from irb, open irb
+3. (Optional)To run an application from irb, open irb
 
      ``` 
         require_relative 'import'
