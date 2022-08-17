@@ -1,1 +1,2 @@
 require_relative 'app_logger/custom_logger'
+require_relative 'app_logger/custom_formatter'
