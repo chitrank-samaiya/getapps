@@ -12,6 +12,7 @@ module AppLogger
 
     def initialize(*args)
       super(*args)
+      @formatter = CustomFormatter.new
     end
 
     def format_severity(severity)
