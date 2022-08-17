@@ -11,13 +11,13 @@ class Import
   attr_reader :logger
 
   def initialize(parser = nil, filepath = nil)
-    @parser =  parser
-    @filepath = filepath
+    @parser =  ARGV[0] || parser
+    @filepath = ARGV[1] || filepath
     @logger = AppLogger::CustomLogger.new(STDOUT)
   end
 
   def format_log_message(row)
-    row.map {|key, value| "#{key}: #{value}"}.join('; ')
+    row.map {|key, value| key == "Name" ? "#{key}: \"#{value}\"" : "#{key}: #{value}"}.join('; ')
   end
 
   def run
