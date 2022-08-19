@@ -29,5 +29,12 @@
         Import.new("softwareadvice", "feed-products/softwareadvice.json").run
      ```
 
+4. To run test cases using rspec run
+
+     ``` 
+        bundle install
+        rspec
+     ```
+
 
     
