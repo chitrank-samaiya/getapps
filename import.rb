@@ -11,29 +11,20 @@ class Import
   attr_reader :logger
 
   def initialize(parser = nil, filepath = nil)
-    @parser =  ARGV[0] || parser
-    @filepath = ARGV[1] || filepath
+    @parser, @filepath = PARSER_LIST.include?(ARGV[0].to_s.downcase) ? ARGV : [parser, filepath]
     @logger = AppLogger::CustomLogger.new(STDOUT)
   end
 
-  def format_log_message(row)
-    row.map {|key, value| key == "Name" ? "#{key}: \"#{value}\"" : "#{key}: #{value}"}.join('; ')
-  end
-
   def run
-    unless parser && PARSER_LIST.include?(parser.downcase)
-      logger.error "Invalid parser."
-      return
+    return if parser.nil? || filepath.nil?
+
+    begin
+      rows = Object.const_get("::Parser::#{parser.capitalize}").parse_and_transform(filepath)
+    rescue NameError => e
+      raise(NameError, "Invalid name for parser.")
     end
 
-    if filepath.nil?
-      logger.error "Invalid path of file."
-      return
-    end
-
-    rows = Object.const_get("::Parser::#{parser.capitalize}").parse_and_transform(filepath)
-
-    rows.each {|row| logger.importing format_log_message(row) }
+    rows.each {|row| logger.importing row }
   end
 
 end
